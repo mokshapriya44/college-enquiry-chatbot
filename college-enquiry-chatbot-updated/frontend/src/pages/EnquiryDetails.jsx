@@ -28,7 +28,7 @@ export default function EnquiryDetails() {
                 <td>{x.student_name}</td><td>{x.email}<br />{x.phone}</td><td>{x.course_name}</td><td>{x.message || "—"}</td>
                 <td>{new Date(x.created_at).toLocaleDateString()}</td>
                 <td><select value={x.status} onChange={e => changeStatus(x.id, e.target.value)}>
-                    {["Pending", "Contacted", "Admitted", "Rejected"].map(s => <option key={s}>{s}</option>)}
+                    {["Pending", "Contacted", "Joined", "Rejected"].map(s => <option key={s}>{s}</option>)}
                 </select></td>
             </tr>)}</tbody>
         </table></div>

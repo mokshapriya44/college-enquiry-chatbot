@@ -3,50 +3,109 @@ import { apiRequest } from "../api";
 
 export default function EnquiryForm() {
     const [courses, setCourses] = useState([]);
+    const [coursesLoading, setCoursesLoading] = useState(true);
     const [courseId, setCourseId] = useState("");
     const [message, setMessage] = useState("");
+    const [student, setStudent] = useState({ name: "", email: "", phone: "" });
     const [notice, setNotice] = useState("");
     const [error, setError] = useState("");
-    const [mine, setMine] = useState([]);
+    const [courseError, setCourseError] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
     async function load() {
         try {
-            const [courseData, enquiryData] = await Promise.all([
-                apiRequest("/courses"), apiRequest("/enquiries/mine")
-            ]);
-            setCourses(courseData); setMine(enquiryData);
-        } catch (e) { setError(e.message); }
+            setCourses(await apiRequest("/courses"));
+            setCourseError("");
+        } catch (error) {
+            setCourseError(error.message);
+        } finally {
+            setCoursesLoading(false);
+        }
     }
     useEffect(() => { load(); }, []);
 
+    function handleStudentChange(e) {
+        setStudent({ ...student, [e.target.name]: e.target.value });
+    }
+
     async function submit(e) {
-        e.preventDefault(); setError(""); setNotice("");
+        e.preventDefault();
+        setError("");
+        setNotice("");
+        setSubmitting(true);
         try {
             const data = await apiRequest("/enquiries", {
                 method: "POST",
-                body: JSON.stringify({ course_id: Number(courseId), message })
+                body: JSON.stringify({
+                    ...student,
+                    course_id: Number(courseId),
+                    message
+                })
             });
-            setNotice(data.message); setCourseId(""); setMessage(""); load();
-        } catch (e) { setError(e.message); }
+            setNotice(data.message);
+            setCourseId("");
+            setMessage("");
+        } catch (e) {
+            setError(e.message);
+        } finally {
+            setSubmitting(false);
+        }
     }
 
     return <main className="content-page">
         <div className="section-heading"><span className="eyebrow">STUDENT SERVICES</span><h1>Course Enquiry Form</h1><p className="muted">Submit your interest. The admin team will contact you.</p></div>
-        <form className="form-card wide-form" onSubmit={submit}>
-            <label>Select course</label>
-            <select value={courseId} onChange={e => setCourseId(e.target.value)} required>
-                <option value="">Choose a course</option>
-                {courses.map(c => <option key={c.id} value={c.id}>{c.course_name} — ₹{Number(c.fee).toLocaleString("en-IN")}</option>)}
-            </select>
-            <label>Message (optional)</label>
-            <textarea rows="4" value={message} onChange={e => setMessage(e.target.value)} placeholder="Tell us if you have any questions..." />
-            {notice && <p className="success">{notice}</p>}{error && <p className="error">{error}</p>}
-            <button className="primary-button" type="submit">Submit Enquiry</button>
-        </form>
-        <section className="table-section"><h2>My Enquiries</h2>
-            {mine.length === 0 ? <p className="muted">No enquiries submitted yet.</p> :
-                <div className="table-wrap"><table><thead><tr><th>Course</th><th>Message</th><th>Status</th><th>Date</th></tr></thead>
-                    <tbody>{mine.map(x => <tr key={x.id}><td>{x.course_name}</td><td>{x.message || "—"}</td><td>{x.status}</td><td>{new Date(x.created_at).toLocaleDateString()}</td></tr>)}</tbody></table></div>}
-        </section>
+        <div className="enquiry-layout">
+            <form className="form-card wide-form enquiry-form" onSubmit={submit}>
+                <div className="enquiry-form-heading">
+                    <span className="eyebrow">ENQUIRY FORM</span>
+                    <h2>Tell us what you need</h2>
+                    <p className="muted">Our admissions team will follow up with you.</p>
+                </div>
+                <div className="enquiry-fields">
+                    <div className="enquiry-field">
+                        <label htmlFor="student-name">Full name <span className="required-label">*</span></label>
+                        <input id="student-name" name="name" value={student.name} onChange={handleStudentChange} maxLength="100" autoComplete="name" required placeholder="Enter your full name" />
+                    </div>
+                    <div className="enquiry-field">
+                        <label htmlFor="student-email">Email address <span className="required-label">*</span></label>
+                        <input id="student-email" name="email" type="email" value={student.email} onChange={handleStudentChange} maxLength="100" autoComplete="email" required placeholder="Enter your email address" />
+                    </div>
+                    <div className="enquiry-field">
+                        <label htmlFor="student-phone">Phone number <span className="required-label">*</span></label>
+                        <input id="student-phone" name="phone" type="tel" value={student.phone} onChange={handleStudentChange} maxLength="15" autoComplete="tel" required placeholder="Enter your phone number" />
+                    </div>
+                    <div className="enquiry-field enquiry-field-wide">
+                        <label htmlFor="course-id">Course interested <span className="required-label">*</span></label>
+                        <select id="course-id" value={courseId} onChange={e => setCourseId(e.target.value)} required disabled={coursesLoading || courses.length === 0}>
+                            <option value="" disabled>{coursesLoading ? "Loading courses..." : "Select a course"}</option>
+                            {courses.map(course => (
+                                <option key={course.id} value={course.id}>
+                                    {course.course_name} | {course.duration} | Rs. {Number(course.fee).toLocaleString("en-IN")}
+                                </option>
+                            ))}
+                        </select>
+                        {courseError && <p className="error">Could not load courses: {courseError}</p>}
+                        {!coursesLoading && !courseError && courses.length === 0 && <p className="muted">No courses are available right now.</p>}
+                    </div>
+                    <div className="enquiry-field enquiry-field-wide">
+                        <label htmlFor="enquiry-message">Message <span className="optional-label">(optional)</span></label>
+                        <textarea id="enquiry-message" rows="4" maxLength="1000" value={message} onChange={e => setMessage(e.target.value)} placeholder="Your message..." />
+                    </div>
+                </div>
+                {notice && <p className="success" role="status">{notice}</p>}
+                {error && <p className="error" role="alert">{error}</p>}
+                <button className="primary-button" type="submit" disabled={submitting || coursesLoading || courses.length === 0}>
+                    {submitting ? "Submitting..." : "Submit Enquiry"}
+                </button>
+            </form>
+            <aside className="enquiry-promo">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=85" alt="Graduates celebrating together" />
+                <div className="enquiry-promo-copy">
+                    <span>ADMISSIONS SUPPORT</span>
+                    <h2>We'll get back to you soon.</h2>
+                    <p>Your course questions go straight to our college team.</p>
+                </div>
+            </aside>
+        </div>
     </main>;
 }

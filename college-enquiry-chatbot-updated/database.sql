@@ -26,15 +26,16 @@ CREATE TABLE IF NOT EXISTS courses (
     duration VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS enquiries (
+CREATE TABLE IF NOT EXISTS admission_enquiries (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
     course_id INT NOT NULL,
     message TEXT,
-    status ENUM('Pending','Contacted','Admitted','Rejected') DEFAULT 'Pending',
+    status ENUM('Pending','Contacted','Joined','Rejected') DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_enquiry_student FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    CONSTRAINT fk_enquiry_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE RESTRICT
+    CONSTRAINT fk_admission_enquiry_course FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
 CREATE TABLE IF NOT EXISTS bot_responses (

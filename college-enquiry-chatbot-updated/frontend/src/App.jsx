@@ -67,69 +67,33 @@ function Navbar() {
     }
 
     return (
-        <nav className="navbar">
-
+        <nav className="navbar portal-navbar">
             <Link className="brand" to="/">
-                ABC College
+                <span className="brand-mark">ABC</span>
+                <span>College</span>
             </Link>
-
             <div className="nav-links">
-
-                {/* Home page */}
                 {isHome && (
                     <>
-                        <Link to="/student-login">
-                            Student Login
-                        </Link>
-
-                        <Link to="/admin-login">
-                            Admin Login
-                        </Link>
+                        <Link to="/student-login">Student Login</Link>
+                        <Link to="/admin-login">Admin Login</Link>
                     </>
                 )}
-
-                {/* Student Navbar */}
                 {!isHome && user?.role === "student" && (
                     <>
-                        <Link to="/chat">Chatbot</Link>
-
-                        <Link to="/enquiry">
-                            Enquiry Form
-                        </Link>
-
-                        <button
-                            className="nav-button"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
+                        <Link className={location.pathname === "/chat" ? "active" : ""} to="/chat">Chatbot</Link>
+                        <Link className={location.pathname === "/enquiry" ? "active" : ""} to="/enquiry">Enquiry Form</Link>
+                        <button className="nav-button" onClick={handleLogout}>Logout</button>
                     </>
                 )}
-
-                {/* Admin Navbar */}
                 {!isHome && user?.role === "admin" && (
                     <>
-                        <Link to="/admin/dashboard">
-                            Dashboard
-                        </Link>
-
-                        <Link to="/admin/courses">
-                            Courses
-                        </Link>
-
-                        <Link to="/admin/enquiries">
-                            Enquiry Details
-                        </Link>
-
-                        <button
-                            className="nav-button"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
+                        <Link className={location.pathname === "/admin/dashboard" ? "active" : ""} to="/admin/dashboard">Dashboard</Link>
+                        <Link className={location.pathname === "/admin/courses" ? "active" : ""} to="/admin/courses">Courses</Link>
+                        <Link className={location.pathname === "/admin/enquiries" ? "active" : ""} to="/admin/enquiries">Enquiry Details</Link>
+                        <button className="nav-button" onClick={handleLogout}>Logout</button>
                     </>
                 )}
-
             </div>
         </nav>
     );
@@ -139,35 +103,18 @@ function Navbar() {
 function Home() {
     return (
         <main className="home-hero">
-            <div className="home-overlay">
-
-                <span className="eyebrow">
-                    STUDENT SUPPORT & ADMISSIONS
-                </span>
-
+            <img
+                className="home-image"
+                src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=2000&q=90"
+                alt="ABC College campus building"
+            />
+            <div className="home-copy">
+                <span className="eyebrow">STUDENT SUPPORT & ADMISSIONS</span>
                 <h1>Welcome to ABC College</h1>
-
-                <p>
-                    Discover courses, explore opportunities
-                    and get answers to your admission questions.
-                </p>
-
+                <p>Find the right course, get clear admission information, and reach our team whenever you need guidance.</p>
                 <div className="hero-actions">
-
-                    <Link
-                        className="primary-button"
-                        to="/student-login"
-                    >
-                        Student Login
-                    </Link>
-
-                    <Link
-                        className="secondary-button"
-                        to="/admin-login"
-                    >
-                        Admin Login
-                    </Link>
-
+                    <Link className="primary-button" to="/student-login">Student Login</Link>
+                    <Link className="secondary-button" to="/admin-login">Admin Login</Link>
                 </div>
             </div>
         </main>

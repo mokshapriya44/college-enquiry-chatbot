@@ -12,7 +12,7 @@ This version keeps the existing React + Vite frontend, Node.js + Express backend
 ### Student login
 Navbar: `Chatbot | Enquiry Form | Logout`
 
-Students can register, log in, use the chatbot, submit enquiries, and view their own enquiry statuses.
+Students can register, log in, use the chatbot, and submit course enquiries for the admin team to review.
 
 ### Admin login
 Navbar: `Dashboard | Courses | Enquiry Details | Logout`
@@ -25,7 +25,7 @@ A student cannot open admin pages by typing an admin URL. The React route guard 
 
 1. Open MySQL Workbench.
 2. Run the complete `database.sql` file.
-3. If your existing `college_chatbot` database already has `students`, `courses`, `bot_responses`, and `chat_history`, this script keeps those tables and creates the new `admins` and `enquiries` tables if they do not exist.
+3. If your existing `college_chatbot` database already has `students`, `courses`, `bot_responses`, and `chat_history`, this script keeps those tables and creates the `admins` and `admission_enquiries` tables if they do not exist.
 4. Existing sample courses are inserted only if they do not already exist.
 
 ## 3. Backend setup
