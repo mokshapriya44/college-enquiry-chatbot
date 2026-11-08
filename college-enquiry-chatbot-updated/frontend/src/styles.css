@@ -50,7 +50,7 @@ h1 { font-size: clamp(32px, 5vw, 48px); margin: 14px 0; }
 }
 input:focus { border-color: #2457d6; box-shadow: 0 0 0 3px #2457d615; }
 .form-footer { text-align: center; color: #718096; font-size: 14px; margin: 20px 0 0; }
-.success { color: #16804a; font-size: 14px; }
+.success { color: hsl(149, 94%, 34%); font-size: 14px; }
 .error { color: #c53030; font-size: 14px; }
 .chat-page { min-height: calc(100vh - 70px); padding: 35px 16px; display: flex; justify-content: center; }
 .chat-card { width: min(760px, 100%); height: min(760px, calc(100vh - 130px)); min-height: 500px; background: white; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 12px 35px #17203312; }
@@ -176,7 +176,7 @@ h1 { font-size: 42px; line-height: 1.15; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 19px; }
 .brand-mark {
     display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px;
-    background: #153f4d; color: #fff; font-size: 11px; letter-spacing: .5px;
+    background: #0788e8; color: #fff; font-size: 11px; letter-spacing: .5px;
 }
 .nav-links { gap: 8px; }
 .nav-links a, .nav-button {
@@ -206,7 +206,7 @@ h1 { font-size: 42px; line-height: 1.15; }
 .primary-button, .secondary-button, .danger-button { min-height: 44px; border-radius: 7px; }
 .home-copy .primary-button { background: #0788e8; color: #fff; }
 .home-copy .primary-button:hover { background: #0876c7; }
-.home-copy .secondary-button { background: #fff; color: #255a76; }
+.home-copy .secondary-button { background: #fff; color: #0788e8; }
 .home-copy .secondary-button:hover { background: #eaf5fc; }
 .page-center {
     min-height: calc(100vh - 72px); padding: 48px 20px;
@@ -217,7 +217,7 @@ h1 { font-size: 42px; line-height: 1.15; }
     border-radius: 11px; box-shadow: 0 18px 50px #19313c12;
 }
 .form-card h2 { margin: 12px 0 7px; font-size: 27px; }
-.form-card label { margin-top: 17px; color: #304651; }
+.form-card label { margin-top: 17px; color: #0788e8; }
 .form-card input, .course-form input, .chat-input-row input, .form-card select, .form-card textarea {
     min-height: 46px; border: 1px solid #d6e0e3; border-radius: 7px; padding: 12px 13px;
 }
@@ -249,9 +249,9 @@ td { color: #314650; }
 .course-card { border: 1px solid #e3e9e9; border-radius: 9px; box-shadow: none; }
 .chat-page { min-height: calc(100vh - 72px); padding: 42px 18px; background: #edf2f3; }
 .chat-card { width: min(720px, 100%); height: min(740px, calc(100vh - 150px)); border: 1px solid #dfe7e9; border-radius: 11px; box-shadow: 0 18px 45px #223a4012; }
-.chat-header { background: #164e5c; }
+.chat-header { background: #0788e8; }
 .chat-body { background: #f7f9f8; }
-.user-message { background: #176471; }
+.user-message { background:  #0788e8; }
 .bot-message { border-radius: 11px; }
 .chat-input-row { background: #fff; }
 .chat-input-row .primary-button { min-width: 82px; }

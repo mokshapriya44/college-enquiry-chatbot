@@ -99,7 +99,7 @@ export default function EnquiryForm() {
                 </button>
             </form>
             <aside className="enquiry-promo">
-                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=85" alt="Graduates celebrating together" />
+                <img src="https://media.istockphoto.com/id/1463013729/photo/online-registration-form-for-modish-form-filling.jpg?s=612x612&w=0&k=20&c=Fnx06haU4IHYLcRpy9Po_TBknvBqVjicGuUWkGu8e6Y=" />
                 <div className="enquiry-promo-copy">
                     <span>ADMISSIONS SUPPORT</span>
                     <h2>We'll get back to you soon.</h2>

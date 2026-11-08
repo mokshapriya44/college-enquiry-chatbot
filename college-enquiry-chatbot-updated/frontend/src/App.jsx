@@ -75,8 +75,8 @@ function Navbar() {
             <div className="nav-links">
                 {isHome && (
                     <>
-                        <Link to="/student-login">Student Login</Link>
-                        <Link to="/admin-login">Admin Login</Link>
+                        {/* <Link to="/student-login">Student Login</Link>
+                        <Link to="/admin-login">Admin Login</Link> */}
                     </>
                 )}
                 {!isHome && user?.role === "student" && (
