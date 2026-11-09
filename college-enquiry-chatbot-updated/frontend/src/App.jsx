@@ -126,61 +126,18 @@ export default function App() {
     return (
         <>
             <Navbar />
-
             <Routes>
-
                 <Route path="/" element={<Home />} />
-
-                <Route
-                    path="/student-login"
-                    element={<PublicOnly><Login /></PublicOnly>}
-                />
-
-                <Route
-                    path="/login"
-                    element={<Navigate to="/student-login" replace />}
-                />
-
-                <Route
-                    path="/admin-login"
-                    element={<PublicOnly><AdminLogin /></PublicOnly>}
-                />
-
-                <Route
-                    path="/register"
-                    element={<PublicOnly><Register /></PublicOnly>}
-                />
-
-                <Route
-                    path="/chat"
-                    element={<StudentRoute><Chatbot /></StudentRoute>}
-                />
-
-                <Route
-                    path="/enquiry"
-                    element={<StudentRoute><EnquiryForm /></StudentRoute>}
-                />
-
-                <Route
-                    path="/admin/dashboard"
-                    element={<AdminRoute><AdminDashboard /></AdminRoute>}
-                />
-
-                <Route
-                    path="/admin/courses"
-                    element={<AdminRoute><Courses /></AdminRoute>}
-                />
-
-                <Route
-                    path="/admin/enquiries"
-                    element={<AdminRoute><EnquiryDetails /></AdminRoute>}
-                />
-
-                <Route
-                    path="*"
-                    element={<Navigate to="/" replace />}
-                />
-
+                <Route path="/student-login" element={<PublicOnly><Login /></PublicOnly>} />
+                <Route path="/login" element={<Navigate to="/student-login" replace />}/>
+                <Route path="/admin-login" element={<PublicOnly><AdminLogin /></PublicOnly>} />
+                <Route path="/register" element={<PublicOnly><Register /></PublicOnly>}/>
+                <Route path="/chat" element={<StudentRoute><Chatbot /></StudentRoute>} />
+                <Route path="/enquiry" element={<StudentRoute><EnquiryForm /></StudentRoute>}/>
+                <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
+                <Route path="/admin/courses" element={<AdminRoute><Courses /></AdminRoute>}/>
+                <Route path="/admin/enquiries" element={<AdminRoute><EnquiryDetails /></AdminRoute>} />
+                <Route path="*" element={<Navigate to="/" replace />}/>
             </Routes>
         </>
     );

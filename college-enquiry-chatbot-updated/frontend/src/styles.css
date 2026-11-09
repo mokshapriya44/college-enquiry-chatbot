@@ -337,3 +337,29 @@ td { color: #314650; }
     .section-heading-row > .primary-button { min-height: 40px; padding: 9px 12px; font-size: 12px; }
     .course-form .form-grid { grid-template-columns: 1fr; }
 }
+
+
+.chat-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 15px 0;
+}
+
+.clear-chat-button {
+    padding: 6px 12px;
+    background: transparent;
+    color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.clear-chat-button:hover {
+    background: #fff0f0;
+}
+
+.clear-chat-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
