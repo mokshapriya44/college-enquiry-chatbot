@@ -10,6 +10,7 @@ app.get("/", (req, res) => res.send("ABC College Enquiry Chatbot API is running"
 
 app.use("/api/students", require("./Router/studentRouter"));
 app.use("/student", require("./Router/studentRouter"));
+app.use("/students", require("./Router/studentRouter"));
 app.use("/api/admin", require("./Router/adminRouter"));
 app.use("/api/courses", require("./Router/courseRouter"));
 app.use("/api/chat", require("./Router/chatRouter"));

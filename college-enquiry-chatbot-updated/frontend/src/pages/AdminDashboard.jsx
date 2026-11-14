@@ -14,7 +14,7 @@ export default function AdminDashboard() {
             })
             .catch(e => setError(e.message));
     }, []);
-    return <main className="content-page dashboard-page">
+    return <main className="content-page dashboard-page">  
         <div className="section-heading"><span className="eyebrow">ADMIN PANEL</span><h1>Dashboard Overview</h1><p className="muted">A snapshot of college admissions activity.</p></div>
         {error && <p className="error">{error}</p>}
         <div className="stats-grid">

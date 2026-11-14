@@ -71,3 +71,34 @@ async function deleteCourse(req, res) {
 }
 
 module.exports = { getCourses, addCourse, updateCourse, deleteCourse };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

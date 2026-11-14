@@ -2,7 +2,7 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-function createToken(payload) {
+function createToken(payload) {  
     return jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN || "1d"
     });
@@ -46,11 +46,20 @@ async function loginStudent(req, res) {
         }
 
         const student = rows[0];
-        const token = createToken({ id: student.id, name: student.name, email: student.email, role: "student" });
+        const token = createToken({ //Token & Response Generation: Antha correct ga unte, createToken() dwara student details (id, name, email, role: "student") tho token generate chesi, success message tho patu client ki return chestundi.
+            id: student.id,
+             name: student.name,
+              email: student.email,
+               role: "student"
+             });
         res.json({
             message: "Student login successful.",
             token,
-            user: { id: student.id, name: student.name, email: student.email, role: "student" }
+            user: { id: student.id,
+                 name: student.name,
+                  email: student.email,
+                   role: "student" 
+                }
         });
     } catch (error) {
         console.error("Student login error:", error);

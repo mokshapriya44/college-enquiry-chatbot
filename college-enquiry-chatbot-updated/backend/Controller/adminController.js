@@ -11,20 +11,33 @@ async function loginAdmin(req, res) {
             "SELECT id, name, email, password_hash FROM admins WHERE email = ?",
             [email.toLowerCase().trim()]
         );
+
+        //rows.length = email check         await bcrypt==password check       bcrypt.compare() user ichina password ni, DB lo unna password_hash tho compare chestundi.
         if (!rows.length || !(await bcrypt.compare(password, rows[0].password_hash))) {
             return res.status(401).json({ message: "Invalid admin email or password." });
         }
 
-        const admin = rows[0];
-        const token = jwt.sign(
-            { id: admin.id, name: admin.name, email: admin.email, role: "admin" },
+        const admin = rows[0]; 
+        const token = jwt.sign(    //(JWT Token Creation):
+            { 
+                id: admin.id,
+                name: admin.name,
+                email: admin.email, 
+                role: "admin" 
+                },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
         );
         res.json({
-            message: "Admin login successful.",
+            message: "Admin login successful.",  //frontend lo display cheyyadniki
             token,
-            user: { id: admin.id, name: admin.name, email: admin.email, role: "admin" }
+            user: { 
+                id: admin.id,
+                name: admin.name,
+                email: admin.email,
+                role: "admin"
+                }
+
         });
     } catch (error) {
         console.error("Admin login error:", error);

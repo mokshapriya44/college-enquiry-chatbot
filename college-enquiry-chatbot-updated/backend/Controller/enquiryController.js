@@ -72,7 +72,11 @@ async function updateEnquiryStatus(req, res) {
             return res.status(400).json({ message: "Invalid enquiry status." });
         }
         const [result] = await db.query("UPDATE admission_enquiries SET status = ? WHERE id = ?", [status, req.params.id]);
-        if (!result.affectedRows) return res.status(404).json({ message: "Enquiry not found." });
+        if (!result.affectedRows)
+             return res.status(404).json(
+            { 
+            message: "Enquiry not found."
+         });
         res.json({ message: "Enquiry status updated." });
     } catch (error) {
         res.status(500).json({ message: "Could not update enquiry status." });
