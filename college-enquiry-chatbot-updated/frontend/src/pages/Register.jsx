@@ -224,15 +224,11 @@ export default function Register() {
                 <span className="eyebrow">GET STARTED</span>
 
                 <h2>
-                    {otpSent
-                        ? "Verify Your Email"
-                        : "Student Registration"}
+                    {otpSent ? "Verify Your Email" : "Student Registration"}
                 </h2>
 
                 <p className="muted">
-                    {otpSent
-                        ? `Enter the OTP sent to ${form.email}`
-                        : "Create your account to use the college chatbot."}
+                    {otpSent ? `Enter the OTP sent to ${form.email}`: "Create your account to use the college chatbot."}
                 </p>
 
                 {!otpSent ? (

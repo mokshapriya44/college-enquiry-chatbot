@@ -13,6 +13,7 @@ This version keeps the existing React + Vite frontend, Node.js + Express backend
 Navbar: `Chatbot | Enquiry Form | Logout`
 
 Students can register, log in, use the chatbot, and submit course enquiries for the admin team to review.
+Registration OTPs are retained in `email_otps` as bcrypt hashes after verification; `students.email_verified` shows whether an account is verified. The original OTP is never stored.
 
 ### Admin login
 Navbar: `Dashboard | Courses | Enquiry Details | Logout`

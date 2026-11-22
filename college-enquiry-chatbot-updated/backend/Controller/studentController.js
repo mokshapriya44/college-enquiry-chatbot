@@ -91,15 +91,8 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const {
-    sendOTPEmail,
-    sendPasswordResetOTPEmail
-} = require("../Services/emailService");
-const {
-    createTextCaptcha,
-    verifyTextCaptcha,
-    verifyTurnstile
-} = require("../Services/captchaService");
+const {sendOTPEmail,sendPasswordResetOTPEmail} = require("../Services/emailService");
+const {createTextCaptcha,verifyTextCaptcha,verifyTurnstile} = require("../Services/captchaService");
 
 function createToken(payload) {
     return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -273,11 +266,6 @@ if (otpData.is_expired) {
 
         await db.query(
             "UPDATE students SET email_verified = TRUE WHERE email = ?",
-            [studentEmail]
-        );
-
-        await db.query(
-            "DELETE FROM email_otps WHERE email = ?",
             [studentEmail]
         );
 
