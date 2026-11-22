@@ -259,9 +259,17 @@ export default function Register() {
                         <label>Phone number</label>
                         <input
                             name="phone"
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]{10}"
+                            maxLength={10}
                             value={form.phone}
-                            onChange={handleChange}
-                            placeholder="Enter your phone number"
+                            onChange={event => setForm(previous => ({
+                                ...previous,
+                                phone: event.target.value.replace(/\D/g, "").slice(0, 10)
+                            }))}
+                            placeholder="Enter 10-digit phone number"
+                            title="Enter exactly 10 digits."
                             required
                         />
 

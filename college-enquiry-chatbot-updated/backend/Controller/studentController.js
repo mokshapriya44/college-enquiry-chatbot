@@ -135,6 +135,13 @@ async function registerStudent(req, res) {
             });
         }
 
+        const studentPhone = String(phone).trim();
+        if (!/^\d{10}$/.test(studentPhone)) {
+            return res.status(400).json({
+                message: "Phone number must contain exactly 10 digits."
+            });
+        }
+
         if (password.length < 6) {
             return res.status(400).json({
                 message: "Password must contain at least 6 characters."
@@ -166,7 +173,7 @@ async function registerStudent(req, res) {
             `INSERT INTO students
             (name, email, phone, password_hash, email_verified)
             VALUES (?, ?, ?, ?, FALSE)`,
-            [name.trim(), studentEmail, phone.trim(), passwordHash]
+            [name.trim(), studentEmail, studentPhone, passwordHash]
         );
 
         const otp = generateOTP();
