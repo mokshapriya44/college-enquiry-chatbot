@@ -145,6 +145,9 @@ async function sendMessage(req, res) {
 
         const userMessage = message.trim();
         const normalized = userMessage.toLowerCase();
+        const wantsDetailedAnswer =
+            /\b(in detail|detailed|detail|in-depth|deeply|depth|step by step|explain more|elaborate|thoroughly|depth ga|detailed ga|vivaranga)\b/i.test(userMessage);
+        const useGeminiForDepth = wantsDetailedAnswer && Boolean(process.env.GEMINI_API_KEY);
 
         let botReply = "";
 
@@ -169,7 +172,8 @@ async function sendMessage(req, res) {
 
             if (
                 matchedCourse &&
-                /(fee|fees|cost|price|duration|how long|about|details|annual|yearly|per year)/i.test(userMessage)
+                /(fee|fees|cost|price|duration|how long|about|details|annual|yearly|per year)/i.test(userMessage) &&
+                !useGeminiForDepth
             ) {
                 botReply = `
 ${matchedCourse.course_name}
@@ -182,14 +186,15 @@ Duration: ${matchedCourse.duration}
                 `.trim();
 
             } else if (
-                /(course|courses|programmes|programs)/i.test(userMessage)
+                /(course|courses|programmes|programs)/i.test(userMessage) &&
+                !useGeminiForDepth
             ) {
                 botReply = "Courses currently offered at SASI College:\n" +
                     courses.map(c =>
                         `${c.course_name} - ₹${Number(c.fee).toLocaleString("en-IN")} - ${c.duration}`
                     ).join("\n");
 
-            } else {
+            } else if (!useGeminiForDepth) {
 
                 // Check predefined responses
                 const [answers] = await db.query(
@@ -255,40 +260,46 @@ ${courseDetails}
 "This information is currently unavailable.
 Please contact SASI College for confirmation."
 
-8. Give simple and clear answers.
-9. Do not provide information about other colleges.
-10. Do not make up facts.
+8. Match the requested level of detail. For requests to explain in depth, use clear headings and bullet points, and include practical next steps when supported by the information below.
+9. Do not invent details. Clearly say when requested information is unavailable.
+10. Do not provide information about other colleges.
+11. Do not make up facts.
 
 Student Question: ${userMessage}
                 `;
 
-                const response = await fetch(
-                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-goog-api-key": process.env.GEMINI_API_KEY
-                        },
-                        body: JSON.stringify({
-                            contents: [
-                                {
-                                    parts: [
-                                        { text: prompt }
-                                    ]
-                                }
-                            ]
-                        })
-                    }
-                );
+                const models = ["gemini-3.8-flash", "gemini-3.6-flash"];
+                let response;
+                let result;
 
-                const result = await response.json();
+                for (let index = 0; index < models.length; index += 1) {
+                    response = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/${models[index]}:generateContent`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-goog-api-key": process.env.GEMINI_API_KEY
+                            },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: prompt }] }]
+                            })
+                        }
+                    );
+                    result = await response.json();
+
+                    if (response.ok || (response.status < 500 && response.status !== 429) || index === models.length - 1) {
+                        break;
+                    }
+
+                    console.warn(`Gemini model ${models[index]} unavailable (${response.status}); trying fallback.`);
+                }
 
                 if (!response.ok) {
-                    console.error("Gemini API Error:", result);
-
-                    botReply =
-                        "Gemini API connection failed. Please try again.";
+                    console.error("Gemini API error:", response.status, result.error?.status || "UNKNOWN");
+                    botReply = response.status === 429 || response.status >= 500
+                        ? "The AI assistant is temporarily busy. Please try again in a moment."
+                        : "The AI assistant request failed. Please check the Gemini API key and API access.";
 
                 } else {
                     botReply = result.candidates?.[0]?.content?.parts

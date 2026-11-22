@@ -7,6 +7,38 @@ CREATE TABLE IF NOT EXISTS students (
     email VARCHAR(150) NOT NULL UNIQUE,
     phone VARCHAR(20) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
+    email_verified BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SET @email_verified_column_exists = (
+    SELECT COUNT(*)
+    FROM information_schema.columns
+    WHERE table_schema = DATABASE()
+      AND table_name = 'students'
+      AND column_name = 'email_verified'
+);
+SET @email_verified_migration = IF(
+    @email_verified_column_exists = 0,
+    'ALTER TABLE students ADD COLUMN email_verified BOOLEAN NOT NULL DEFAULT TRUE',
+    'SELECT 1'
+);
+PREPARE email_verified_migration_statement FROM @email_verified_migration;
+EXECUTE email_verified_migration_statement;
+DEALLOCATE PREPARE email_verified_migration_statement;
+
+CREATE TABLE IF NOT EXISTS email_otps (
+    email VARCHAR(150) PRIMARY KEY,
+    otp_hash VARCHAR(255) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS password_reset_otps (
+    email VARCHAR(150) PRIMARY KEY,
+    otp_hash VARCHAR(255) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    attempts TINYINT UNSIGNED NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

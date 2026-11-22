@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import { apiRequest } from "../api";
 
 const emptyForm = { course_name: "", description: "", fee: "", duration: "" };
-
+//Purpose: Courses component lo backend nunchi courses data fetch chesi, React state lo store chesthunnam. Tarvatha UI lo display cheyyadaniki use chestham.
 export default function Courses() {
     const [courses, setCourses] = useState([]);
-    const [form, setForm] = useState(emptyForm);
-    const [editingId, setEditingId] = useState(null);
+    const [form, setForm] = useState(emptyForm);  // State to hold form data for adding/editing a course
+    const [editingId, setEditingId] = useState(null);  // State to track which course is being edited
     const [showForm, setShowForm] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
-
-    async function loadCourses() {
-        try {
+ 
+    async function loadCourses() {  // Function to load courses from the backend
+        try { 
             const data = await apiRequest("/courses");
             setCourses(data);
         } catch (err) {
@@ -21,9 +21,9 @@ export default function Courses() {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {  //React component render ayyaka effect execute avuthundi.
         loadCourses();
-    }, []);
+    }, []);         //Empty dependency array ante component first time mount ayinappudu effect execute avuthundi.
 
     function handleChange(event) {
         setForm({ ...form, [event.target.name]: event.target.value });
@@ -117,3 +117,23 @@ export default function Courses() {
         </main>
     );
 }
+
+
+
+
+
+
+
+
+
+// Complete flow ela work avuthundi?
+// Admin opens Courses page
+// useEffect() executes
+// loadCourses() calls /courses API
+// Backend fetches data from MySQL
+// setCourses(data)
+// Courses displayed in frontend
+
+// useEffect → API call automatic ga trigger chesthundi.
+// loadCourses → Backend nunchi data fetch chesthundi.
+// setCourses → Fetched data ni state lo store chesthundi.

@@ -17,7 +17,7 @@ async function createEnquiry(req, res) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return res.status(400).json({ message: "Please enter a valid email address." });
         }
-        if (!Number.isInteger(Number(course_id)) || Number(course_id) < 1) {
+        if (!Number.isInteger(Number(course_id)) || Number(course_id) < 1) {   // 
             return res.status(400).json({ message: "Please select a valid course." });
         }
 

@@ -18,10 +18,10 @@ export default function AdminDashboard() {
         <div className="section-heading"><span className="eyebrow">ADMIN PANEL</span><h1>Dashboard Overview</h1><p className="muted">A snapshot of college admissions activity.</p></div>
         {error && <p className="error">{error}</p>}
         <div className="stats-grid">
-            <article className="stat-card"><span>Total Courses</span><strong>{stats?.courses ?? "—"}</strong></article>
-            <article className="stat-card"><span>Total Enquiries</span><strong>{stats?.enquiries ?? "—"}</strong></article>
-            <article className="stat-card"><span>Pending</span><strong>{stats?.pending ?? "—"}</strong></article>
-            <article className="stat-card"><span>Registered Students</span><strong>{stats?.students ?? "—"}</strong></article>
+            <article className="stat-card stat-card-courses"><span>Total Courses</span><strong>{stats?.courses ?? "—"}</strong></article>
+            <article className="stat-card stat-card-enquiries"><span>Total Enquiries</span><strong>{stats?.enquiries ?? "—"}</strong></article>
+            <article className="stat-card stat-card-pending"><span>Pending</span><strong>{stats?.pending ?? "—"}</strong></article>
+            <article className="stat-card stat-card-students"><span>Registered Students</span><strong>{stats?.students ?? "—"}</strong></article>
         </div>
         <div className="dashboard-bottom">
             <section className="dashboard-recent">
@@ -33,9 +33,9 @@ export default function AdminDashboard() {
             </section>
             <aside className="quick-actions">
                 <h2>Quick actions</h2>
-                <Link to="/admin/courses">Manage Courses <span aria-hidden="true">→</span></Link>
-                <Link to="/admin/enquiries">View Enquiries <span aria-hidden="true">→</span></Link>
-                <Link to="/admin/enquiries">Review Pending <span aria-hidden="true">→</span></Link>
+                <Link className="quick-action-courses" to="/admin/courses">Manage Courses <span aria-hidden="true">→</span></Link>
+                <Link className="quick-action-enquiries" to="/admin/enquiries">View Enquiries <span aria-hidden="true">→</span></Link>
+                <Link className="quick-action-pending" to="/admin/enquiries?status=Pending">Review Pending <span aria-hidden="true">→</span></Link>
             </aside>
         </div>
     </main>;
